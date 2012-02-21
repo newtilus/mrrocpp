@@ -11,8 +11,6 @@
 #include "base/ecp/ecp_task.h"
 #include "base/lib/logger.h"
 #include "base/ecp/ecp_task.h"
-#include "generator/ecp/bias_edp_force/ecp_g_bias_edp_force.h"
-#include "generator/ecp/tff_nose_run/ecp_g_tff_nose_run.h"
 
 #define UP 0
 #define RIGHT 1
@@ -27,8 +25,10 @@ namespace task {
 
 class ecp_en_labyrinth: public task {
 protected:
-	common::generator::get_position* gp;
-	common::generator::bias_edp_force* befgen; //calibration of force
+	common::generator::en_labyrinth* enl;
+	common::generator::en_get_position* gp;
+	common::generator::bias_edp_force* bef; //calibration of force
+	common::generator::tff_nose_run* nose;
 public:
 	ecp_en_labyrinth(lib::configurator &_config);
 

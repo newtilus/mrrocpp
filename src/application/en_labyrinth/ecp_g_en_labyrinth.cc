@@ -17,6 +17,7 @@
 #include "base/lib/sr/sr_ecp.h"
 #include "base/ecp/ecp_robot.h"
 #include "ecp_g_en_labyrinth.h"
+#include "ecp_g_en_get_position.h"
 
 
 namespace mrrocpp {

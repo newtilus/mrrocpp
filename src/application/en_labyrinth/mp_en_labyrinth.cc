@@ -14,8 +14,8 @@
 #include "base/mp/mp_task.h"
 #include "base/lib/mrmath/mrmath.h"
 #include "robot/irp6_tfg/dp_tfg.h"
-//#include "generator/ecp/ecp_mp_g_tfg.h"
 #include "ecp_mp_g_en_labyrinth.h"
+#include "ecp_mp_g_en_get_position.h"
 #include "robot/irp6ot_tfg/mp_r_irp6ot_tfg.h"
 #include "robot/irp6p_tfg/mp_r_irp6p_tfg.h"
 
@@ -65,6 +65,24 @@ void mp_en_labyrinth::main_task_algorithm(void)
 	sr_ecp_msg->message("mp start");
 
 	Types::Mrrocpp_Proxy::EN_Labyrinth_Reading reading;
+
+
+	set_next_ecp_state(ecp_mp::generator::ECP_GEN_BIAS_EDP_FORCE, (int) 5, "", lib::irp6p_m::ROBOT_NAME);
+	wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
+
+	for(;;)
+	{
+		set_next_ecp_state(ecp_mp::generator::ECP_GEN_TFF_NOSE_RUN, (int) ecp_mp::generator::tff_nose_run::behaviour_specification, ecp_mp::generator::tff_nose_run::behaviour_specification_data_type(true, true, true, true, true, true), lib::irp6p_m::ROBOT_NAME);
+		wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
+
+		set_next_ecp_state(ecp_mp::generator::ECP_GEN_EN_GET_POSITION, 0, "", lib::irp6p_m::ROBOT_NAME);
+		wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
+	}
+
+
+	// TODO Delete this to continue with main_task execution
+	return;
+
 
 
 	sr_ecp_msg->message("reading init");
@@ -135,7 +153,6 @@ void mp_en_labyrinth::main_task_algorithm(void)
 				break;
 			}
 			set_next_ecp_state(ecp_mp::generator::ECP_GEN_EN_LABYRINTH, (int) 5, relative_move, lib::irp6p_m::ROBOT_NAME);
-			//wait_for_task_termination(false, 1, lib::irp6p_m::ROBOT_NAME.c_str());
 			wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
 	}
 	set_next_ecp_state(ecp_mp::generator::ECP_GEN_EN_LABYRINTH, (int) 5, relative_move, lib::irp6p_m::ROBOT_NAME);

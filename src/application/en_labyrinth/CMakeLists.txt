@@ -5,6 +5,7 @@ add_executable(mp_en_labyrinth
 add_executable(ecp_en_labyrinth
 	ecp_en_labyrinth.cc
     ecp_g_en_labyrinth.cc
+    ecp_g_en_get_position.cc  
 )
 
 target_link_libraries(ecp_en_labyrinth 

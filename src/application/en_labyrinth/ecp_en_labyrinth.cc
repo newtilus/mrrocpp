@@ -8,14 +8,16 @@
 #include <unistd.h>
 #include <iostream>
 
-#include "ecp_mp_g_en_labyrinth.h"
-#include "ecp_g_en_labyrinth.h"
 #include "robot/irp6p_m/ecp_r_irp6p_m.h"
 #include "robot/irp6p_m/const_irp6p_m.h"
 #include "base/ecp/ecp_task.h"
-//#include "generator/ecp/bias_edp_force/ecp_mp_g_bias_edp_force.h"
-//#include "generator/ecp/tff_nose_run/ecp_mp_g_tff_nose_run.h"
-//#include "generator/ecp/ecp_mp_g_tfg.h"
+#include "generator/ecp/bias_edp_force/ecp_g_bias_edp_force.h"
+#include "generator/ecp/tff_nose_run/ecp_g_tff_nose_run.h"
+#include "ecp_mp_g_en_labyrinth.h"
+#include "ecp_g_en_labyrinth.h"
+#include "ecp_mp_g_en_get_position.h"
+#include "ecp_g_en_get_position.h"
+
 
 #include "ecp_en_labyrinth.h"
 
@@ -33,19 +35,19 @@ ecp_en_labyrinth::ecp_en_labyrinth(lib::configurator &_config): common::task::ta
 
 	ecp_m_robot = (boost::shared_ptr<robot_t>) new ecp::irp6p_m::robot(*this);
 
-	register_generator(new common::generator::en_labyrinth(*this));
+	enl = new common::generator::en_labyrinth(*this);
+	register_generator(enl);
 
-	gp = new common::generator::get_position(*this,lib::ECP_XYZ_ANGLE_AXIS, 6);
+	gp = new common::generator::en_get_position(*this);
 	register_generator(gp);
 
-	register_generator(new common::generator::bias_edp_force(*this));
+	bef = new common::generator::bias_edp_force(*this);
+	register_generator(bef);
 
-	{
-		common::generator::tff_nose_run *ecp_gen = new common::generator::tff_nose_run(*this, 8);
-		ecp_gen->configure_pulse_check(true);
-		ecp_gen->configure_behaviour(lib::CONTACT, lib::CONTACT, lib::CONTACT, lib::UNGUARDED_MOTION, lib::UNGUARDED_MOTION, lib::UNGUARDED_MOTION);
-		register_generator(ecp_gen);
-	}
+	nose = new common::generator::tff_nose_run(*this, 8);
+	nose->configure_pulse_check(true);
+	nose->configure_behaviour(lib::CONTACT, lib::CONTACT, lib::CONTACT, lib::UNGUARDED_MOTION, lib::UNGUARDED_MOTION, lib::UNGUARDED_MOTION);
+	register_generator(nose);
 
 
 	sr_ecp_msg->message("ECP en_labyrinth");
