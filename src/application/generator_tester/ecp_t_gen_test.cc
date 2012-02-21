@@ -25,10 +25,12 @@ gen_test::gen_test(lib::configurator &_config) :
 		// TODO: throw
 	}
 
+
+
 	// TEMPORARY REMOVAL
-	// register_generator(new subtask::subtask_const_vel_gen_test(*this));
-	// register_generator(new subtask::subtask_smooth_gen_test(*this));
-	// register_generator(new subtask::subtask_spline_gen_test(*this));
+        //register_generator(new common::generator::spline_gen_test(*this));
+        register_generator(new common::generator::smooth_gen_test(*this));
+        //register_generator(new common::generator::const_vel_gen_test(*this));
 	sr_ecp_msg->message("ecp GEN_TEST loaded");
 }
 

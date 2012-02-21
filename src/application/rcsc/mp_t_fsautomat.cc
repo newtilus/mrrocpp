@@ -37,7 +37,7 @@
 #include "StateHeap.h"
 
 #include "base/lib/datastr.h"
-#include "generator/ecp/ecp_mp_g_newsmooth.h"
+#include "generator/ecp/newsmooth/ecp_mp_g_newsmooth.h"
 #include "generator/ecp/tff_gripper_approach/ecp_mp_g_tff_gripper_approach.h"
 #include "cube_face.h"
 #include "CubeState.h"
@@ -347,7 +347,7 @@ void fsautomat::configureProperTransmitter(const char *propTrans)
 void fsautomat::stopProperGen(const common::State &state)
 {
 	if (!state.robotSet)
-		send_end_motion_to_ecps(1, (state.getRobot()).c_str());
+		send_end_motion_to_ecps(state.getRobot());
 	// TODO
 	//send_end_motion_to_ecps(state.robotSet->firstSet.size(), state.robotSet->firstSet);
 }

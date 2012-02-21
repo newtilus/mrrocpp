@@ -40,9 +40,9 @@ task* return_created_mp_task(lib::configurator &_config)
 //Robot creation, depending on the configuration file
 void gen_test::create_robots()
 {
-	ACTIVATE_MP_ROBOT(irp6ot_m);
+        ACTIVATE_MP_ROBOT(irp6ot_m);
 	ACTIVATE_MP_ROBOT(irp6p_m);
-	ACTIVATE_MP_ROBOT(conveyor);
+        ACTIVATE_MP_ROBOT(conveyor);
 }
 
 gen_test::gen_test(lib::configurator &_config) :
@@ -55,8 +55,8 @@ void gen_test::main_task_algorithm(void)
 
 	sr_ecp_msg->message("Gen Test (MP) START");
 
-	lib::robot_name_t manipulator_name;
-	lib::robot_name_t gripper_name;
+        //lib::robot_name_t manipulator_name;
+        //lib::robot_name_t gripper_name;
 
 	// Track
 
@@ -91,13 +91,8 @@ void gen_test::main_task_algorithm(void)
 		//------------------- CONSTANT VELOCITY GENERATOR END -------------------
 
 		//------------------- SMOOTH GENERATOR -------------------
-		set_next_ecp_state(ecp_mp::subtask::ECP_ST_SMOOTH_GEN_TEST, (int) 5, "", lib::irp6p_m::ROBOT_NAME);
-
-<<<<<<< HEAD
-		wait_for_task_termination(false, 1, lib::irp6p_m::ROBOT_NAME.c_str());
-=======
+                set_next_ecp_state(ecp_mp::generator::ECP_MP_SMOOTH_GEN_TEST, (int) 5, "", lib::irp6p_m::ROBOT_NAME);
                 wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
->>>>>>> b970453b0a7f972b32f4c88bdcba208616f35052
 		//------------------- SMOOTH GENERATOR END -------------------
 
 		//------------------- SPLINE GENERATOR -------------------
