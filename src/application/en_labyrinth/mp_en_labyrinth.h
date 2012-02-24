@@ -9,10 +9,12 @@
 #include "sensor/discode/discode_sensor.h"
 #include <boost/shared_ptr.hpp>
 
-#define UP 0
+#define DOWN 0
 #define RIGHT 1
-#define DOWN 2
+#define UP 2
 #define LEFT 3
+#define DIMENSION_X 7
+#define DIMENSION_Y 7
 
 using mrrocpp::ecp_mp::sensor::discode::discode_sensor;
 

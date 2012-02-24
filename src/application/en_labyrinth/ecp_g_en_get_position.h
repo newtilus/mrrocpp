@@ -10,7 +10,7 @@
 #include <ctime>
 
 #include "base/ecp/ecp_generator.h"
-#include "generator/ecp/ecp_g_get_position.h"
+#include "generator/ecp/get_position/ecp_g_get_position.h"
 #include "ecp_mp_g_en_get_position.h"
 
 namespace mrrocpp {
@@ -24,6 +24,8 @@ public:
 	en_get_position(common::task::task& _ecp_task); //constructor
 
 	void conditional_execution();
+private:
+	int calibration_points; // the number of calibration points set for the labyrinth
 };
 
 } // namespace generator

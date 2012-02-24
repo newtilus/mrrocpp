@@ -11,7 +11,6 @@
 #include "base/ecp/ecp_task.h"
 #include "base/lib/logger.h"
 #include "base/ecp/ecp_task.h"
-
 #define UP 0
 #define RIGHT 1
 #define DOWN 2

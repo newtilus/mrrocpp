@@ -54,10 +54,14 @@ void en_labyrinth::conditional_execution()
 	reset();
 	set_absolute();
 
-	if(first_value == "ABSOLUTE_JOIN")
+	if(first_value == "ABSOLUTE_JOINT")
 		load_absolute_joint_trajectory_pose(position_vec);
 	else if(first_value == "RELATIVE_EULER")
 		load_relative_angle_axis_trajectory_pose(position_vec);
+	else if(first_value == "XYZ_ANGLE_AXIS")
+		load_absolute_angle_axis_trajectory_pose(position_vec);
+	else if(first_value == "XYZ_EULER_ZYZ")
+		load_absolute_euler_zyz_trajectory_pose(position_vec);
 	else
 		sr_ecp_msg.message("Cannot define coordinates!");
 
