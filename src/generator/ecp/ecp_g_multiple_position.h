@@ -75,14 +75,14 @@ protected:
 	 * Energy vector iterator.
 	 */
 	std::vector <std::vector <double> >::iterator energy_vector_iterator;
-        /**
-         * Optimal pose vector.
-         */
-        std::vector <Pos> optimal_pose_vector;
-        /**
-         * Optimal pose vector iterator.
-         */
-        typename std::vector <Pos>::iterator optimal_pose_vector_iterator;
+    /**
+     * Optimal pose vector.
+     */
+    std::vector <Pos> optimal_pose_vector;
+    /**
+     * Optimal pose vector iterator.
+     */
+    typename std::vector <Pos>::iterator optimal_pose_vector_iterator;
 	/**
 	 * Type of the commanded motion (absolute or relative)
 	 */
@@ -132,19 +132,27 @@ protected:
 	 */
 	bool angle_axis_absolute_transformed_into_relative;
 	/**
-	 * Energy cost during consecutive optimization iterations.
+     * Objective function value during consecutive optimization iterations.
 	 */
-	std::vector <double> energy_cost;
-        /**
-         * Stores the path to last loaded trajectory file.
-         */
-        std::string last_loaded_file_path;
-        /**
-         * Position from which the optimized trajectory is started.
-         */
-        std::vector<double> optimization_start_position;
+    std::vector <double> objective_vector;
+    /**
+     * Energy consumed during consecutive optimization iterations.
+     */
+    std::vector <double> energy_cost;
+    /**
+     * Time cost during consecutive optimization iterations
+     */
+    std::vector <double> time_cost;
+    /**
+     * Stores the path to last loaded trajectory file.
+     */
+    std::string last_loaded_file_path;
+    /**
+     * Position from which the optimized trajectory is started.
+     */
+    std::vector<double> optimization_start_position;
 
-	//--------- VELOCITY AND ACCELERATION VECTORS ---------
+        //--------- VELOCITY AND ACCELERATION VECTORS ---------
 	/**
 	 * Standard velocity in joint coordinates.
 	 */
@@ -211,6 +219,15 @@ protected:
 	std::vector <double> angle_axis_max_acceleration;
 	//--------- VELOCITY AND ACCELERATION VECTORS END ---------
 
+    /**
+     * Calculates objective function value.
+     */
+    double calculate_objective(double energySum, double timeSum, double timeCoef)
+    {
+        double objective = timeCoef * (1 - timeSum/sqrt(timeSum * timeSum + 100)) + (1 - timeCoef)*(1 - energySum/sqrt(energySum * energySum + 200000));
+
+        return objective;
+    }
 	/**
 	 * Sets up the start position vector of the first position in the trajectory chain.
 	 */
@@ -332,20 +349,20 @@ protected:
 		}
 		flushall();
 	}
-        /**
-         *
-         */
-        bool check_if_lowest_energy_cost(double cost)
-        {
-            for (int i = 0; i < energy_cost.size(); i++) {
-                if (energy_cost[i] < cost)
-                {
-                    return false;
-                }
+    /**
+     *
+     */
+    bool check_if_highest_objective(double objective)
+    {
+        for (int i = 0; i < objective_vector.size(); i++) {
+            if (objective_vector[i] > objective)
+            {
+                return false;
             }
-
-            return true;
         }
+
+        return true;
+    }
 
 public:
 	/**
@@ -371,7 +388,7 @@ public:
 
 	}
 	/**
-	 * Prints energy cost vector.
+     * Prints energy cost vector.
 	 */
 	void print_energy_cost()
 	{
@@ -380,6 +397,26 @@ public:
 			printf("%d: %f\n", i, energy_cost[i]);
 		}
 	}
+    /**
+     * Prints tiome cost vector.
+     */
+    void print_time_cost()
+    {
+        printf("############## Time cost ##############\n");
+        for (int i = 0; i < time_cost.size(); i++) {
+            printf("%d: %f\n", i, time_cost[i]);
+        }
+    }
+    /**
+     * Prints objective vector.
+     */
+    void print_objective()
+    {
+        printf("############## Objective vector ##############\n");
+        for (int i = 0; i < objective_vector.size(); i++) {
+            printf("%d: %f\n", i, objective_vector[i]);
+        }
+    }
 
 	/**
 	 * Set debug variable.
@@ -502,7 +539,7 @@ public:
 	/**
 	 * Definition of the next_step method.
 	 */
-	bool next_step()
+	virtual bool next_step()
 	{
 
 		if (debug) {
@@ -552,7 +589,7 @@ public:
 					}
 
 					if (debug) {
-                                                //printf("%f\t", *tempIter);
+                                                printf("%f\t", *tempIter);
 						//printf("%f\t", currents[i]);
 					}
 					tempIter++;
@@ -565,7 +602,7 @@ public:
 				}
 
 				if (debug) {
-                                        //printf("\n");
+                                        printf("\n");
 					flushall();
 				}
 				break;
@@ -666,13 +703,13 @@ public:
 		}
 
 		if (debug) {
-                    //print_pose_vector();
+                    print_pose_vector();
 		}
 
 		interpolated = interpolate();
 
 		if (debug) {
-                        //print_coordinate_vector();
+                    print_coordinate_vector();
 		}
 
 		return interpolated;

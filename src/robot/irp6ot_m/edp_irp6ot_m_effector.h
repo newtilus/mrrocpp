@@ -34,7 +34,8 @@ protected:
 	// Metoda tworzy modele kinematyczne dla robota IRp-6 na postumencie.
 	virtual void create_kinematic_models_for_given_robot(void);
 
-	boost::thread thread_id;
+	boost::thread vs_tid;
+	boost::thread imu_tid;
 
 public:
 	effector(common::shell &_shell);
@@ -48,7 +49,7 @@ public:
 
 	common::servo_buffer *return_created_servo_buffer();
 
-	void master_order(common::MT_ORDER nm_task, int nm_tryb);
+	void master_order(common::MT_ORDER nm_task, int nm_tryb, lib::c_buffer &instruction);
 
 	/*!
 	 * \brief The particular type of instruction send form ECP to EDP
