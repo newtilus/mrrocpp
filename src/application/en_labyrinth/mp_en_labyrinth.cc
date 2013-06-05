@@ -79,24 +79,20 @@ void mp_en_labyrinth::main_task_algorithm(void)
 
 	set_next_ecp_state(ecp_mp::generator::ECP_GEN_EN_LABYRINTH, (int) 5, "XYZ_ANGLE_AXIS 0.608 2.457 0.15 -1.517 2.7 -0.094", lib::irp6p_m::ROBOT_NAME);
 	wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
+	char reply = ' ';
 
-	cout << endl << endl << "Do you want to calibrate manipulator with the labyrinth?" << endl;
-	char reply;
-	while (true) {
-	    cout << "Calibrate manipulator with the labyrinth? [y/n]" << endl;
+/* Nie pytaj, po prostu to zrob, ziom
+	do
+	{
+	    cout << "Do you want to calibrate manipulator with the labyrinth? [y/n]" << endl;
 	    cin >> reply;
-
-	    if ((reply == 'y') || (reply == 'n')) {
-	        break;
-	    }
 	}
+	while( !cin.fail() && reply!='y' && reply!='n' );
 
 	if(reply == 'y')
 	{
+*/
 		// ENABLING MANIPULATOR TO BE MOVED TO EACH CORNER
-
-		set_next_ecp_state(ecp_mp::generator::ECP_GEN_BIAS_EDP_FORCE, (int) 5, "", lib::irp6p_m::ROBOT_NAME);
-		wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
 
 		sr_ecp_msg->message("Move the manipulator to the first corner.");
 		set_next_ecp_state(ecp_mp::generator::ECP_GEN_TFF_NOSE_RUN, (int) ecp_mp::generator::tff_nose_run::behaviour_specification, ecp_mp::generator::tff_nose_run::behaviour_specification_data_type(true, true, true, true, true, true), lib::irp6p_m::ROBOT_NAME);
@@ -125,8 +121,8 @@ void mp_en_labyrinth::main_task_algorithm(void)
 
 		set_next_ecp_state(ecp_mp::generator::ECP_GEN_EN_GET_POSITION, 0, "", lib::irp6p_m::ROBOT_NAME);
 		wait_for_task_termination(false, lib::irp6p_m::ROBOT_NAME);
-	}
 
+//	}
 
 
 	// READ CORNERS FROM FILES
